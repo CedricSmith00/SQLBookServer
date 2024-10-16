@@ -1,8 +1,11 @@
 require("dotenv").config();
+const bookRouter = require("./db/routes/bookRoutes")
 const express = require("express");
 const app = express();
 require("./db/connection");
+
 app.use(express.json());
+app.use(bookRouter);
 
 
 app.get("/health", (req, res) => {
