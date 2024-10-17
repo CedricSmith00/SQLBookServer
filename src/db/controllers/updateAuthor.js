@@ -1,21 +1,22 @@
-const Book = require("./bookModel");
+const Book = require('../models/bookModel');
 
 const updateAuthor = async (req, res) => {
     try {
-        const result = await Book.create({
-            title: req.body.title,
-            author: req.body.author,
-            genre: req.body.genre,
-        });
+        const { bookId, newAuthor } = req.body;
 
-        res
-          .status(201)
-          .json({ message: `${result.title} has been created`, result: result});
+        const updatedBook = await Book.update(
+            { author: newAuthor }, 
+            { where: { bookId } }  
+        );
+
+        if (updatedBook[0] === 0) {
+            return res.status(404).json({ message: "Book not found" });
+        }
+
+        res.json({ message: "Author updated successfully" });
     } catch (error) {
-        console.log(error);
+        res.status(500).json({ error: "Error updating author" });
     }
 };
 
-module.exports = {
-    updateAuthor: updateAuthor,
-};
+module.exports = updateAuthor;

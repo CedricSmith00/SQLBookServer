@@ -1,21 +1,21 @@
-const Book = require("./bookModel");
+const Book = require('../models/bookModel');
 
 const deleteBook = async (req, res) => {
     try {
-        const result = await Book.create({
-            title: req.body.title,
-            author: req.body.author,
-            genre: req.body.genre,
+        const { bookId } = req.body;
+
+        const deletedBook = await Book.destroy({
+            where: { bookId }
         });
 
-        res
-          .status(201)
-          .json({ message: `${result.title} has been created`, result: result});
+        if (!deletedBook) {
+            return res.status(404).json({ message: "Book not found" });
+        }
+
+        res.json({ message: "Book deleted successfully" });
     } catch (error) {
-        console.log(error);
+        res.status(500).json({ error: "Error deleting book" });
     }
 };
 
-module.exports = {
-    deleteBook: deleteBook,
-};
+module.exports = deleteBook 

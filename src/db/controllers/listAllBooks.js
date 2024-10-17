@@ -1,21 +1,13 @@
-const Book = require("./bookModel");
+const Book = require('../models/bookModel');
 
-const ListBooks = async (req, res) => {
+const listAllBooks = async (req, res) => {
     try {
-        const result = await Book.create({
-            title: req.body.title,
-            author: req.body.author,
-            genre: req.body.genre,
-        });
-
-        res
-          .status(201)
-          .json({ message: `${result.title} has been created`, result: result});
+        const books = await Book.findAll(); 
+        res.json(books);
     } catch (error) {
-        console.log(error);
+        res.status(500).json({ error: "Error fetching books" });
     }
 };
 
-module.exports = {
-    ListBooks: ListBooks,
-};
+
+module.exports = listAllBooks 

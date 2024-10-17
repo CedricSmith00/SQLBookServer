@@ -1,4 +1,4 @@
-const connecttion = require("../connection");
+const connection = require("../connection.js");
 const{DataTypes} = require("sequelize");
 
 const Book = connection.define("Book",{

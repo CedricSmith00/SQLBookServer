@@ -1,21 +1,21 @@
-const Book = require("./bookModel");
+const Book = require('../models/bookModel');
 
 const deleteAllBooks = async (req, res) => {
     try {
-        const result = await Book.create({
-            title: req.body.title,
-            author: req.body.author,
-            genre: req.body.genre,
+        const deletedBooks = await Book.destroy({
+            where: {},
+            truncate: true
         });
 
-        res
-          .status(201)
-          .json({ message: `${result.title} has been created`, result: result});
+        if (!deletedBooks) {
+            return res.status(404).json({ message: "No books found to delete" });
+        }
+
+        res.json({ message: "All books deleted successfully" });
     } catch (error) {
-        console.log(error);
+        res.status(500).json({ error: "Error deleting all books" });
     }
 };
 
-module.exports = {
- deleteAllBooks: deleteAllBooks,
-};
+module.exports = deleteAllBooks 
+
